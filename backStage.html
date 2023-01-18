@@ -74,71 +74,24 @@
           </tr>
         </tbody>
       </table>
-      <!-- $emit -->
-      <!-- <pagination2 :page-in="page" :get-product-list="getProductList" @change-page="getProductList"></pagination2> -->
+
       <!-- props -->
       <pagination :page-in="page" :get-product-list=getProductList></pagination>
+      <!-- $emit -->
+      <!-- <pagination2 :page-in="page" :get-product-list="getProductList" @change-page="getProductList"></pagination2> -->
 
-      <!-- <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item" :class=" {disabled: page.has_pre === false}">
-                <a class="page-link" href="#" aria-label="Previous" @click.prevent="getProductList(page.current_page-1)">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item" :class=" {active: pages===page.current_page}" v-for="pages in page.total_pages " :key="pages + 'pages'" @click.prevent="getProductList(pages)" >
-                <a class="page-link" href="#">{{pages}}</a>
-              </li>
-              
-              <li class="page-item" :class=" {disabled: !page.has_next}">
-                <a class="page-link" href="#" aria-label="Next" @click.prevent="getProductList(page.current_page+1)">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav> -->
-
-
-      <!-- <a class="page-link" href="#" @click="$emit('change-page', pages)" >{{pages}}</a> -->
-      <!-- <a class="page-link" href="#" @click.prevent="getProductList(page)">{{page}}</a> -->
     </div>
 
     <!-- 新增or編輯 Modal start-->
-    <product-modal :temp-data="tempData" @update="getProductList" :is-new="isNew" :create-image="createImage"
-      ref="editProductModal" :confirm="confirm" ></product-modal>
+    <product-modal :temp-data="tempData" @update="getProductList" :is-new="isNew"
+      ref="editProductModal"  ></product-modal>
     <!-- 新增or編輯 Modal end-->
 
     <!-- 刪除 Modal start-->
     <delete-modal :temp-data="tempData" @update="getProductList" ref="deleteProductModal"  ></delete-modal>
     <!-- 刪除 Modal end-->
   </div>
-  <!-- <script type="text/x-template" id="deleteProductModal">
-    <div id="deleteProductModal"  class="modal fade " tabindex="-1"
-    aria-labelledby="deleteProductModalLabel" aria-hidden="true">
- <div class="modal-dialog">
-   <div class="modal-content border-0">
-     <div class="modal-header bg-danger text-white">
-       <h5 id="deleteProductModalLabel" class="modal-title">
-         <span>刪除產品</span>
-       </h5>
-       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-     </div>
-     <div class="modal-body">
-       是否刪除
-       <strong class="text-danger" >{{tempData.title}}</strong> 商品(刪除後將無法恢復)。
-     </div>
-     <div class="modal-footer">
-       <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-         取消
-       </button>
-       <button type="button" class="btn btn-danger" @click="deleteProduct">
-         確認刪除
-       </button>
-     </div>
-   </div>
- </div>
-</div>
-  </script> -->
+
   
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"

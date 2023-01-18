@@ -35,24 +35,22 @@ export default {
       deleteProduct() {
         axios.delete(`${api_url}/api/${api_path}/admin/product/${this.tempData.id}`)
             .then(res => {
-              this.deleteProductModal.hide();
-                this.$emit('update')
-                // this.getProductList();
-                alert("刪除成功");
+                alert(res.data.message);
+                this.deleteProductModal.hide();
+                this.$emit('update')//emit 觸發外層 getProductList()
             })
             .catch(error => {
                 alert(error.response.data.message);
             })
       },
       show(){
-        this.deleteProduct.show()
+        this.deleteProductModal.show()
       },
       hide(){
-        this.deleteProduct.hide()
+        this.deleteProductModal.hide()
       }
     },
     mounted() {
        this.deleteProductModal = new bootstrap.Modal(this.$refs.deleteProductModal)
-        // deleteProductModal = new bootstrap.Modal(document.querySelector("#deleteProductModal"));//實體化
     }
 }

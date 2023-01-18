@@ -1,8 +1,7 @@
-let editProductModal = ''
 export default {
-    props : ['tempData','isNew','createImage','confirm'],
+    props : ['tempData','isNew'],
     template:` <div id="editProductModal"  class="modal fade " tabindex="-1" aria-labelledby="editProductModalLabel"
-    aria-hidden="true">
+    aria-hidden="true" ref="editProductModal">
     <div class="modal-dialog modal-xl " >
     <div class="modal-content border-0">
       <div class="modal-header bg-dark text-white">
@@ -82,7 +81,12 @@ export default {
               </div>
             </div>
             <hr>
-
+            <div class="row">
+              <div class="mb-3 col-md-12">
+                <label for="flavor" class="form-label">口味</label>
+                <input id="flavor" type="text" class="form-control" placeholder="請輸入口味" v-model.number="tempData.flavor">
+              </div>
+            </div>
             <div class="mb-3">
               <label for="description" class="form-label">產品描述</label>
               <textarea id="description" type="text" class="form-control"
@@ -107,7 +111,7 @@ export default {
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+        <button type="button" class="btn btn-outline-secondary"  @click="hide">
           取消
         </button>
         <button type="button" class="btn btn-primary" @click="confirm">
@@ -119,37 +123,44 @@ export default {
   </div>`,
   data() {
     return{
-        // editProductModal: ''
+        editProductModal: ''
     }
   },
   methods: {
-    // //確認按鈕
-    //  confirm() {
-    //     //初始為新增
-    //     let http = 'post';
-    //     let url = `${api_url}/api/${api_path}/admin/product`;
+    //確認按鈕
+     confirm() {
+        //初始為新增
+        let http = 'post';
+        let url = `${api_url}/api/${api_path}/admin/product`;
         
-    //     //判斷為編輯
-    //     if( this.isNew === false ){
-    //         http = 'put';
-    //         url = `${api_url}/api/${api_path}/admin/product/${this.tempData.id}`;
-    //     }
-    //      axios[http](url,{data:this.tempData})//這邊格式比較特別本來，要對照文件給的格式放入data
-    //         .then(res => { 
-    //             editProductModal.hide();
-    //             //editProductModal.hide();
-    //             this.$emit('update');
-    //             // this.getProductList();
-    //         })
-    //         .catch(error => {
-    //             // alert(error.response.data.message);
-    //             alert('錯誤');
-    //         })
-        
-    // },
+        //判斷為編輯
+        if( this.isNew === false ){
+            http = 'put';
+            url = `${api_url}/api/${api_path}/admin/product/${this.tempData.id}`;
+        }
+         axios[http](url,{data:this.tempData})//這邊格式比較特別本來，要對照文件給的格式放入data
+            .then(res => { 
+                alert(res.data.message);
+                this.editProductModal.hide();
+                this.$emit('update');//emit 觸發外層 getProductList()
+            })
+            .catch(error => {
+                alert(error.response.data.message);
+            })  
+    },
+    //新增圖片
+    createImage() {
+      this.tempData.imagesUrl = []; //新增input欄位放入網址
+      this.tempData.imagesUrl.push('');
+     },
+    show(){
+      this.editProductModal.show()
+    },
+    hide(){
+      this.editProductModal.hide()
+    }
   },
   mounted() {
-    // this.editProductModal = new bootstrap.Modal(this.$refs.editProductModal)
-    editProductModal = new bootstrap.Modal(document.querySelector("#editProductModal")); //實體化
+    this.editProductModal = new bootstrap.Modal(this.$refs.editProductModal)
   },
 }

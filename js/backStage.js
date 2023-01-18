@@ -1,9 +1,9 @@
 
 import pagination from "./pagination.js";
-import pagination2 from "./pagination2.js";
+
 import productModal from "./newOrEditModal.js";
 import deleteModal from "./deleteModal.js";
-let editProductModal = '';
+
 
 
 // var myModal = new bootstrap.Modal(editProductModal);//實體化
@@ -17,12 +17,10 @@ const app = createApp({
             page:{},
             isNew : false,//判斷是否為新增or編輯
             tempData:{
-                "imagesUrl":[]
+                "imagesUrl":[],
+                "flavor":"",
             },
             uploadImages : "",
-            
-            
-            
         }
     },
     methods: {
@@ -43,10 +41,7 @@ const app = createApp({
             axios.get(`${api_url}/api/${api_path}/admin/products/?page=${page}`)
                 .then(res => {
                     this.page = res.data.pagination;
-                    console.log(this.page);
                     this.products = res.data.products;
-                    console.log(res.data);
-                    
                 })
                 .catch(error => {
                     alert(error.response.data.message);
@@ -58,60 +53,18 @@ const app = createApp({
                 this.tempData = {
                     "imagesUrl":[]
                 };
-                editProductModal.show();
+                this.$refs.editProductModal.show();
                 this.isNew = true;
             }else if(state === 'edit'){
-                editProductModal.show();
+                this.$refs.editProductModal.show();
                 this.tempData = {...product};
                 this.isNew = false;
             } else if (state === 'delete'){
-                this.deleteProductModal.show();
+                this.$refs.deleteProductModal.show();
                 this.tempData = {...product};
                 this.isNew = false;
             }
-        },
-        //確認按鈕
-     confirm() {
-        //初始為新增
-        let http = 'post';
-        let url = `${api_url}/api/${api_path}/admin/product`;
-        
-        //判斷為編輯
-        if( this.isNew === false ){
-            http = 'put';
-            url = `${api_url}/api/${api_path}/admin/product/${this.tempData.id}`;
-        }
-         axios[http](url,{data:this.tempData})//這邊格式比較特別本來，要對照文件給的格式放入data
-            .then(res => { 
-                editProductModal.hide();
-                //editProductModal.hide();
-                // this.$emit('update');
-                this.getProductList();
-            })
-            .catch(error => {
-                // alert(error.response.data.message);
-                alert('錯誤');
-            })
-        
-    },
-     
-        //新增圖片
-        createImage() {
-            this.tempData.imagesUrl = []; //新增input欄位放入網址
-            this.tempData.imagesUrl.push('');
-        },
-        //刪除單一產品
-        // deleteProduct() {
-        //     axios.delete(`${api_url}/api/${api_path}/admin/product/${this.tempData.id}`)
-        //         .then(res => {
-        //             deleteProductModal.hide();
-        //             this.getProductList();
-        //             alert("刪除成功");
-        //         })
-        //         .catch(error => {
-        //             alert(error.response.data.message);
-        //         })
-        // },
+        },     
         //上傳圖片API
         upload(event) {
             // 取得上傳的檔案
@@ -140,46 +93,15 @@ const app = createApp({
     },
     //區域註冊
     components: {
-        pagination,pagination2,productModal,deleteModal
+        pagination,productModal,deleteModal
     },
-    mounted() {
-        this.deleteProductModal = new bootstrap.Modal(this.$refs.deleteProductModal.$el);//實體化
-        // this.deleteProductModal = new bootstrap.Modal(this.$refs.deleteProductModal)
-        editProductModal = new bootstrap.Modal(document.querySelector("#editProductModal")); //實體化
-        // this.editProductModal = new bootstrap.Modal(this.$refs.editProductModal)
+    mounted() { 
         //取出Token
         const token = document.cookie.replace(/(?:(?:^|.*;\s*)week2HexToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
         axios.defaults.headers.common['Authorization'] = token;
-
         this.checkAdmin();        
     },
 })
-
-// app.component('product-modal',{
-//     props : ['tempData','confirm','isNew','createImage'],
-//     template:'#product-modal-template',
-// });
-// app.component('deleteModal',{
-//     props : ['tempData',],
-//     template:'#deleteProductModal',
-//     methods: {
-//         deleteProduct() {
-//             axios.delete(`${api_url}/api/${api_path}/admin/product/${this.tempData.id}`)
-//                 .then(res => {
-//                     deleteProductModal.hide();
-//                     this.$emit('update')
-//                     // this.getProductList();
-//                     alert("刪除成功");
-//                 })
-//                 .catch(error => {
-//                     alert(error.response.data.message);
-//                 })
-//         },
-//     },
-//     mounted() {
-//         deleteProductModal = new bootstrap.Modal(document.querySelector("#deleteProductModal"));//實體化
-//     }
-// })
 
 
 app.mount('#app');
