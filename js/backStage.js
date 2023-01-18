@@ -2,9 +2,9 @@
 import pagination from "./pagination.js";
 import pagination2 from "./pagination2.js";
 import productModal from "./newOrEditModal.js";
-// import deleteModal from "./deleteModal.js";
+import deleteModal from "./deleteModal.js";
 let editProductModal = '';
-let deleteProductModal = '';
+// let deleteProductModal = '';
 
 // var myModal = new bootstrap.Modal(editProductModal);//實體化
 const { createApp } = Vue;
@@ -20,6 +20,8 @@ const app = createApp({
                 "imagesUrl":[]
             },
             uploadImages : "",
+            deleteProductModal:'',
+            // editProductModal:''
             
             
         }
@@ -64,7 +66,7 @@ const app = createApp({
                 this.tempData = {...product};
                 this.isNew = false;
             } else if (state === 'delete'){
-                deleteProductModal.show();
+                this.deleteProductModal.show();
                 this.tempData = {...product};
                 this.isNew = false;
             }
@@ -139,10 +141,11 @@ const app = createApp({
     },
     //區域註冊
     components: {
-        pagination,pagination2,productModal,
+        pagination,pagination2,productModal,deleteModal
     },
     mounted() {
-        deleteProductModal = new bootstrap.Modal(document.querySelector("#deleteProductModal"));//實體化
+        // deleteProductModal = new bootstrap.Modal(document.querySelector("#deleteProductModal"));//實體化
+        this.deleteProductModal = new bootstrap.Modal(this.$refs.deleteProductModal)
         editProductModal = new bootstrap.Modal(document.querySelector("#editProductModal")); //實體化
         // this.editProductModal = new bootstrap.Modal(this.$refs.editProductModal)
         //取出Token
@@ -157,23 +160,27 @@ const app = createApp({
 //     props : ['tempData','confirm','isNew','createImage'],
 //     template:'#product-modal-template',
 // });
-app.component('deleteModal',{
-    props : ['tempData','isNew','createImage','confirm'],
-    template:'#deleteProductModal',
-    methods: {
-        deleteProduct() {
-            axios.delete(`${api_url}/api/${api_path}/admin/product/${this.tempData.id}`)
-                .then(res => {
-                    deleteProductModal.hide();
-                    this.getProductList();
-                    alert("刪除成功");
-                })
-                .catch(error => {
-                    alert(error.response.data.message);
-                })
-        },
-    }
-})
+// app.component('deleteModal',{
+//     props : ['tempData',],
+//     template:'#deleteProductModal',
+//     methods: {
+//         deleteProduct() {
+//             axios.delete(`${api_url}/api/${api_path}/admin/product/${this.tempData.id}`)
+//                 .then(res => {
+//                     deleteProductModal.hide();
+//                     this.$emit('update')
+//                     // this.getProductList();
+//                     alert("刪除成功");
+//                 })
+//                 .catch(error => {
+//                     alert(error.response.data.message);
+//                 })
+//         },
+//     },
+//     mounted() {
+//         deleteProductModal = new bootstrap.Modal(document.querySelector("#deleteProductModal"));//實體化
+//     }
+// })
 
 
 app.mount('#app');

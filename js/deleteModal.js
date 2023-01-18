@@ -1,7 +1,7 @@
 export default {
-    props : ['tempData','isNew','createImage','confirm'],
+    props : ['tempData'],
     template:`
-    <div id="deleteProductModal" ref="deleteProductModal" class="modal fade " tabindex="-1"
+    <div id="deleteProductModal"  class="modal fade " tabindex="-1"
     aria-labelledby="deleteProductModalLabel" aria-hidden="true">
  <div class="modal-dialog">
    <div class="modal-content border-0">
@@ -26,18 +26,27 @@ export default {
    </div>
  </div>
 </div>`,
-    methods: {
-        deleteProduct() {
-            axios.delete(`${api_url}/api/${api_path}/admin/product/${this.tempData.id}`)
-                .then(res => {
-                    deleteProductModal.hide();
-                    this.getProductList();
-                    alert("刪除成功");
-                })
-                .catch(error => {
-                    alert(error.response.data.message);
-                    // alert('刪除失敗');
-                })
-        },
+    data() {
+      return {
+        deleteProductModal: ''
+      }
     },
+    methods: {
+      deleteProduct() {
+        axios.delete(`${api_url}/api/${api_path}/admin/product/${this.tempData.id}`)
+            .then(res => {
+              this.deleteProductModal.hide();
+                this.$emit('update')
+                // this.getProductList();
+                alert("刪除成功");
+            })
+            .catch(error => {
+                alert(error.response.data.message);
+            })
+      },
+    },
+    mounted() {
+      this.deleteProductModal = new bootstrap.Modal(this.$refs.deleteProductModal)
+        // deleteProductModal = new bootstrap.Modal(document.querySelector("#deleteProductModal"));//實體化
+    }
 }
