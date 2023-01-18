@@ -20,8 +20,7 @@ const app = createApp({
                 "imagesUrl":[]
             },
             uploadImages : "",
-            deleteProductModal:'',
-            // editProductModal:''
+            
             
             
         }

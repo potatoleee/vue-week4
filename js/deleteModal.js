@@ -2,7 +2,7 @@ export default {
     props : ['tempData'],
     template:`
     <div id="deleteProductModal"  class="modal fade " tabindex="-1"
-    aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+    aria-labelledby="deleteProductModalLabel" aria-hidden="true" ref="deleteProductModal">
  <div class="modal-dialog">
    <div class="modal-content border-0">
      <div class="modal-header bg-danger text-white">
