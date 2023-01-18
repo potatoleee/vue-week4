@@ -14,16 +14,8 @@
 <body>
 
   <div id="app">
-    <div class="container mt-4">
-      <h1 class="text-center"> WEEK4後台 | Backstage</h1>
-      <h2>圖片上傳區</h2>
-      <label for="file" class="mb-2">圖片檔案僅接受 jpg、png 格式，感謝配合～</label>
-      <input type="file" class="form-control mb-2" id="file" placeholder="請輸入圖片連結" @change="upload" />
-      <a :href="uploadImages" target="_blank">上傳的圖片連結</a>
-      <p class="break-word">
-        {{uploadImages}}
-      </p>
-    </div>
+    <h1 class="text-center"> WEEK4後台 | Backstage</h1>
+    <upload-image></upload-image>
     <div class="container">
       <div class="text-end mt-4">
         <button type="button" class="btn btn-primary " @click="openModal('new', product)">

@@ -1,8 +1,8 @@
 
 import pagination from "./pagination.js";
-
 import productModal from "./newOrEditModal.js";
 import deleteModal from "./deleteModal.js";
+import uploadImage from "./uploadImage.js";
 
 
 
@@ -20,7 +20,7 @@ const app = createApp({
                 "imagesUrl":[],
                 "flavor":"",
             },
-            uploadImages : "",
+    
         }
     },
     methods: {
@@ -66,34 +66,34 @@ const app = createApp({
             }
         },     
         //上傳圖片API
-        upload(event) {
-            // 取得上傳的檔案
-            const file = event.target.files[0];
+        // upload(event) {
+        //     // 取得上傳的檔案
+        //     const file = event.target.files[0];
             
-            /* 限制檔案上傳型別 */
-            let fileType = file.name.substring(file.name.lastIndexOf('.') + 1);   /* 得到檔案字尾名 */
-            if (fileType !== 'jpg' && fileType !== 'JPG' && fileType !== 'png') {
-                alert("上傳檔案只能是 jpg、png 格式!，請注意格式上傳呦");
-                return;
-            }
-            const formData = new FormData();
-            formData.append('file-to-upload', file)
+        //     /* 限制檔案上傳型別 */
+        //     let fileType = file.name.substring(file.name.lastIndexOf('.') + 1);   /* 得到檔案字尾名 */
+        //     if (fileType !== 'jpg' && fileType !== 'JPG' && fileType !== 'png') {
+        //         alert("上傳檔案只能是 jpg、png 格式!，請注意格式上傳呦");
+        //         return;
+        //     }
+        //     const formData = new FormData();
+        //     formData.append('file-to-upload', file)
         
-            axios.post(`${api_url}/api/${api_path}/admin/upload`,formData)
-              .then((res) => {
-                // console.log("上傳圖片網址", res.data.imageUrl);
-                this.uploadImages = res.data.imageUrl;
-                alert("圖片上傳成功");
-              })
-              .catch((err) => {
-                alert(err.response.data.message);
-              })
+        //     axios.post(`${api_url}/api/${api_path}/admin/upload`,formData)
+        //       .then((res) => {
+        //         // console.log("上傳圖片網址", res.data.imageUrl);
+        //         this.uploadImages = res.data.imageUrl;
+        //         alert("圖片上傳成功");
+        //       })
+        //       .catch((err) => {
+        //         alert(err.response.data.message);
+        //       })
         
-        }
+        // }
     },
     //區域註冊
     components: {
-        pagination,productModal,deleteModal
+        pagination,productModal,deleteModal,uploadImage
     },
     mounted() { 
         //取出Token
