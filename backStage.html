@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+  <link rel="stylesheet" href="style/all.css">
+  <title>WEEK4 後台管理 BackStage</title>
+</head>
+
+<body>
+
+  <div id="app">
+    <div class="container mt-4">
+      <h1 class="text-center"> WEEK4後台 | Backstage</h1>
+      <h2>圖片上傳區</h2>
+      <label for="file" class="mb-2">圖片檔案僅接受 jpg、png 格式，感謝配合～</label>
+      <input type="file" class="form-control mb-2" id="file" placeholder="請輸入圖片連結" @change="upload" />
+      <a :href="uploadImages" target="_blank">上傳的圖片連結</a>
+      <p class="break-word">
+        {{uploadImages}}
+      </p>
+    </div>
+    <div class="container">
+      <div class="text-end mt-4">
+        <button type="button" class="btn btn-primary " @click="openModal('new', product)">
+          建立新產品
+        </button>
+      </div>
+      <table class="table mt-4">
+        <thead>
+          <tr>
+            <th width="120">
+              分類
+            </th>
+            <th>產品名稱</th>
+            <th width="120">
+              原價
+            </th>
+            <th width="120">
+              售價
+            </th>
+            <th width="100">
+              是否啟用
+            </th>
+            <th width="120">
+              編輯
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(product,id) in products" :key=product.id>
+            <td> {{ product.category}} </td>
+            <td> {{ product.title}} </td>
+            <td> NT${{ product.origin_price}} </td>
+            <td> NT${{ product.price}} </td>
+            <td>
+              <span v-if="product.is_enabled" class="text-success">啟用</span>
+              <span v-else>未啟用</span>
+            </td>
+            <td>
+              <div class="btn-group">
+                <button type="button" class="btn btn-outline-primary btn-sm" @click="openModal('edit', product)">
+                  編輯
+                </button>
+                <button type="button" class="btn btn-outline-danger btn-sm" @click="openModal('delete', product)">
+                  刪除
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- $emit -->
+      <!-- <pagination2 :page-in="page" :get-product-list="getProductList" @change-page="getProductList"></pagination2> -->
+      <!-- props -->
+      <pagination :page-in="page" :get-product-list=getProductList></pagination>
+
+      <!-- <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item" :class=" {disabled: page.has_pre === false}">
+                <a class="page-link" href="#" aria-label="Previous" @click.prevent="getProductList(page.current_page-1)">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item" :class=" {active: pages===page.current_page}" v-for="pages in page.total_pages " :key="pages + 'pages'" @click.prevent="getProductList(pages)" >
+                <a class="page-link" href="#">{{pages}}</a>
+              </li>
+              
+              <li class="page-item" :class=" {disabled: !page.has_next}">
+                <a class="page-link" href="#" aria-label="Next" @click.prevent="getProductList(page.current_page+1)">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav> -->
+
+
+      <!-- <a class="page-link" href="#" @click="$emit('change-page', pages)" >{{pages}}</a> -->
+      <!-- <a class="page-link" href="#" @click.prevent="getProductList(page)">{{page}}</a> -->
+    </div>
+
+    <!-- 新增or編輯 Modal start-->
+    <product-modal :temp-data="tempData" @update="getProductList" :is-new="isNew" :create-image="createImage"
+      ref="editProductModal" :confirm="confirm"></product-modal>
+    <!-- 新增or編輯 Modal end-->
+
+    <!-- 刪除 Modal start-->
+    <delete-modal :temp-data="tempData" ></delete-modal>
+    <!-- 刪除 Modal end-->
+  </div>
+  <script type="text/x-template" id="deleteProductModal">
+    <div id="deleteProductModal"  class="modal fade " tabindex="-1"
+    aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+ <div class="modal-dialog">
+   <div class="modal-content border-0">
+     <div class="modal-header bg-danger text-white">
+       <h5 id="deleteProductModalLabel" class="modal-title">
+         <span>刪除產品</span>
+       </h5>
+       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+     </div>
+     <div class="modal-body">
+       是否刪除
+       <strong class="text-danger" >{{tempData.title}}</strong> 商品(刪除後將無法恢復)。
+     </div>
+     <div class="modal-footer">
+       <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+         取消
+       </button>
+       <button type="button" class="btn btn-danger" @click="deleteProduct">
+         確認刪除
+       </button>
+     </div>
+   </div>
+ </div>
+</div>
+  </script>
+  
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+    crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+  <script src="js/config.js"></script>
+  <script type="module" src="js/backStage.js"></script>
+</body>
+
+</html>
