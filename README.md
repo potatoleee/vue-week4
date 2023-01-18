@@ -1,6 +1,6 @@
 # Vue Week4 
 
-**Live Demo: [Week3Demo](https://potatoleee.github.io/vue-week4/)**
+**Live Demo: [Week4Demo](https://potatoleee.github.io/vue-week4/)**
 ## 元件化練習
 pagination      頁籤
 productModal    新增編輯modal

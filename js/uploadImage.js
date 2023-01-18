@@ -30,7 +30,6 @@ export default {
         
             axios.post(`${api_url}/api/${api_path}/admin/upload`,formData)
               .then((res) => {
-                // console.log("上傳圖片網址", res.data.imageUrl);
                 this.uploadImages = res.data.imageUrl;
                 alert("圖片上傳成功");
               })
