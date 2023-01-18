@@ -4,7 +4,7 @@ import pagination2 from "./pagination2.js";
 import productModal from "./newOrEditModal.js";
 import deleteModal from "./deleteModal.js";
 let editProductModal = '';
-// let deleteProductModal = '';
+
 
 // var myModal = new bootstrap.Modal(editProductModal);//實體化
 const { createApp } = Vue;
@@ -144,8 +144,8 @@ const app = createApp({
         pagination,pagination2,productModal,deleteModal
     },
     mounted() {
-        // deleteProductModal = new bootstrap.Modal(document.querySelector("#deleteProductModal"));//實體化
-        this.deleteProductModal = new bootstrap.Modal(this.$refs.deleteProductModal)
+        this.deleteProductModal = new bootstrap.Modal(this.$refs.deleteProductModal.$el);//實體化
+        // this.deleteProductModal = new bootstrap.Modal(this.$refs.deleteProductModal)
         editProductModal = new bootstrap.Modal(document.querySelector("#editProductModal")); //實體化
         // this.editProductModal = new bootstrap.Modal(this.$refs.editProductModal)
         //取出Token

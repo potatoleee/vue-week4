@@ -44,9 +44,15 @@ export default {
                 alert(error.response.data.message);
             })
       },
+      show(){
+        this.deleteProduct.show()
+      },
+      hide(){
+        this.deleteProduct.hide()
+      }
     },
     mounted() {
-      this.deleteProductModal = new bootstrap.Modal(this.$refs.deleteProductModal)
+       this.deleteProductModal = new bootstrap.Modal(this.$refs.deleteProductModal)
         // deleteProductModal = new bootstrap.Modal(document.querySelector("#deleteProductModal"));//實體化
     }
 }
